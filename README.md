@@ -115,3 +115,52 @@
 		}
 		return view;
 	}
+	-------------------
+	<%=session.getAttribute("username")%>
+		<h3>Booking</h3>
+		<form:form action="getRoomDetails.obj" modelAttribute="room">
+  Enter Hotel Id to retrieve Room Details
+ <form:input path="hotelId" pattern="^[1-9][0-9]{3}$" title="Please enter 4-digit hotel id"/>
+			<form:errors path="hotelId" />
+			<input type="submit" name="search" value="Search">
+		</form:form>
+		<c:set var="r" value="${roomDetails }" />
+		<c:choose>
+			<c:when test="${r!=null }">
+				<table border="2">
+					<tr>
+						<th>Hotel Id</th>
+						<th>Room Id</th>
+						<th>Room No</th>
+						<th>Room Type</th>
+						<th>Per Night rate</th>
+						<th>Availability</th>
+
+					</tr>
+					<c:forEach items="${roomDetails}" var="e">
+						<tr>
+							<form:form action="BookRoom.obj" modelAttribute="room">
+								<td><form:hidden path="hotelId" value="${e.hotelId}" /> <c:out
+										value="${e.hotelId}"></c:out></td>
+								<td><form:hidden path="roomId" value="${e.roomId}" /> <c:out
+										value="${e.roomId}"></c:out></td>
+								<td><form:hidden path="roomNo" value="${e.roomNo}" /> <c:out
+										value="${e.roomNo}"></c:out></td>
+								<td><form:hidden path="roomType" value="${e.roomType}" />
+									<c:out value="${e.roomType}"></c:out></td>
+								<td><form:hidden path="perNightRate"
+										value="${e.perNightRate}" /> <c:out value="${e.perNightRate}"></c:out></td>
+								<td><form:hidden path="availability"
+										value="${e.availability}" /> <c:out value="${e.availability}"></c:out></td>
+								<td><input type="submit" value="Book Now" name="button"></td>
+							</form:form>
+						</tr>
+
+					</c:forEach>
+
+				</table>
+			</c:when>
+			<c:otherwise>
+				<c:out value="${errorMessage}" />
+			</c:otherwise>
+		</c:choose>
